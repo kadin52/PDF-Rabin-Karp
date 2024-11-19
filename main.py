@@ -1,4 +1,6 @@
-
+from PyPDF2 import PdfReader
+import tkinter as tk
+from tkinter import filedialog, messagebox
 def rabin_karp(text,pattern,q=101):
     d = 256
     n = len(text)
@@ -28,15 +30,30 @@ def rabin_karp(text,pattern,q=101):
 def phrase_search_in_document():
     print("Welcome to phrase detecction app!")
 
-    document = input("enter the main text (document): ")
+    root=tk.Tk()
+    root.title("PDF Phrase Search Using Rabin Karp")
+
+    frame = tk.Frame(root)
+    frame.pack(pady=10)
+
+    with open("Student Project # 2.pdf", 'rb') as file:
+        reader = PdfReader(file)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+            #print(page.extract_text())
+
+    print(text)
+
+    document = text
     phrase =input("enter the phrase to search for: ")
+    matches = rabin_karp(text, phrase)
+    print(matches)
+    for i in range(13):
+        print(f"{i}: {text[i]}")
 
-    matches = rabin_karp(document,phrase)
 
-    if matches:
-        print(f"Phrase found {len(matches)} times at positions (0-indexed): {matches}")
-    else:
-        print("Phrase not found in the document.")
+
 
 if __name__ == "__main__":
     phrase_search_in_document()
